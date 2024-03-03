@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from support.views import UserViewSet
+
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('support/', include('support.urls')),
+    path('', include(router.urls)),
 ]

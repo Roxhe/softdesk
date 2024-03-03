@@ -12,11 +12,12 @@ class User(AbstractUser):
 
     def clean(self):
         super().clean()
-        today = timezone.now().date()
-        age = today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
-        if age < 15:
-            raise ValidationError("User must be at least 15 years old")
+        if self.birthdate:
+            today = timezone.now().date()
+            age = today.year - self.birthdate.year - \
+                ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
+            if age < 15:
+                raise ValidationError("User must be at least 15 years old")
 
     def __str__(self):
         return self.username
-
