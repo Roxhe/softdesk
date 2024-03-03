@@ -1,6 +1,6 @@
 from django.utils import timezone
 from rest_framework import serializers
-from .models import User
+from .models import User, Project, Issue, Comment, Contributor
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,3 +14,16 @@ class UserSerializer(serializers.ModelSerializer):
         if age < 15:
             raise serializers.ValidationError("User must be at least 15 years old")
         return value
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
+
+class ContributorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contributor
+        fields = '__all__'
