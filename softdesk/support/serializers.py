@@ -22,8 +22,23 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
         fields = '__all__'
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+        fields = '__all__'
+
+    def validate_other_contributors(self, value):
+        user_ids = User.objects.filter(username__in=value).values_list('id', flat=True)
+        project_id = self.context['request'].data.get('project')
+        project_contributor_ids = Contributor.objects.filter(project_id=project_id).values_list('user', flat=True)
+
+        for user_id in list(user_ids):
+            if user_id not in project_contributor_ids:
+                raise serializers.ValidationError("User(s) aren't contributor(s) of the project.")
+        return list(user_ids)

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import User, Project, Issue, Comment, Contributor
-from .serializers import UserSerializer, ProjectSerializer, ContributorSerializer
+from .serializers import UserSerializer, ProjectSerializer, ContributorSerializer, IssueSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -21,3 +21,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class ContributorViewSet(viewsets.ModelViewSet):
     queryset = Contributor.objects.all()
     serializer_class = ContributorSerializer
+
+
+class IssueViewSet(viewsets.ModelViewSet):
+    queryset = Issue.objects.all()
+    serializer_class = IssueSerializer

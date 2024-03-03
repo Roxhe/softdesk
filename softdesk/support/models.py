@@ -77,6 +77,7 @@ class Issue(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='todo')
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='')
     tag = models.CharField(max_length=20, choices=TAG_CHOICES)
+    other_contributors = models.ManyToManyField(User, related_name='issues_as_contributor', blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_issues')
 
