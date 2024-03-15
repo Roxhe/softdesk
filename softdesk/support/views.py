@@ -2,13 +2,13 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .models import User, Project, Issue, Comment, Contributor
 from .serializers import UserSerializer, ProjectSerializer, ContributorSerializer, IssueSerializer, CommentSerializer
-from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminAuthenticated, IsAuthenticated, IsContributor
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminAuthenticated]
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -30,7 +30,7 @@ class ContributorViewSet(viewsets.ModelViewSet):
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsContributor]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
