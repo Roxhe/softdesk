@@ -33,23 +33,22 @@ class UserSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'type', 'author', 'date_created']
 
 
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
-        fields = '__all__'
+        fields = ['user', 'project', 'date_joined']
 
 
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
-        fields = '__all__'
-
+        fields = ['id', 'title', 'description', 'project', 'status', 'priority', 'tag', 'created_time', 'author']
 
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'issue', 'description', 'created_time', 'author']
