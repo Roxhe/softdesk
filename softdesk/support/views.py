@@ -45,7 +45,7 @@ class ProjectViewSet(ProjectAuthorPermissionMixin, viewsets.ModelViewSet):
 class ContributorViewSet(viewsets.ModelViewSet):
     queryset = Contributor.objects.all()
     serializer_class = ContributorSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminAuthenticated]
 
 
 class IssueViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
@@ -53,7 +53,7 @@ class IssueViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
     serializer_class = IssueSerializer
 
 
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     lookup_field = 'id'
