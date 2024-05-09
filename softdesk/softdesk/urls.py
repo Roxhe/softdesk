@@ -7,10 +7,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'projects', ProjectViewSet)
+router.register(r'projects', ProjectViewSet, basename='project')
 router.register(r'contributors', ContributorViewSet)
-router.register(r'issues', IssueViewSet)
-router.register(r'comments', CommentViewSet)
+router.register(r'issues', IssueViewSet, basename='issue')
+router.register(r'comments', CommentViewSet, basename='comment')
 
 
 urlpatterns = [

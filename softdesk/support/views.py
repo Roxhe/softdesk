@@ -34,8 +34,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class ProjectViewSet(ProjectAuthorPermissionMixin, viewsets.ModelViewSet):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+    def get_queryset(self):
+        return Project.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         project = serializer.save(author=self.request.user)
@@ -49,11 +51,15 @@ class ContributorViewSet(viewsets.ModelViewSet):
 
 
 class IssueViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
-    queryset = Issue.objects.all()
     serializer_class = IssueSerializer
+
+    def get_queryset(self):
+        return Issue.objects.filter(author=self.request.user)
 
 
 class CommentViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     lookup_field = 'id'
+
+    def get_queryset(self):
+        return Comment.objects.filter(author=self.request.user)
