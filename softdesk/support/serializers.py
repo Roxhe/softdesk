@@ -4,6 +4,7 @@ from .models import User, Project, Issue, Comment, Contributor
 from django.contrib.auth.hashers import make_password
 
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -45,7 +46,8 @@ class ContributorSerializer(serializers.ModelSerializer):
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
-        fields = ['id', 'title', 'description', 'project', 'status', 'priority', 'tag', 'created_time', 'author']
+        fields = ['id', 'title', 'description', 'project', 'status', 'priority',
+                  'tag', 'created_time', 'author', 'other_contributors']
 
 
 class CommentSerializer(serializers.ModelSerializer):

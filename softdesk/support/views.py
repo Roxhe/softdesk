@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from django.db.models import Q
+
 from .models import User, Project, Issue, Comment, Contributor
 from .serializers import UserSerializer, ProjectSerializer, ContributorSerializer, IssueSerializer, CommentSerializer
 from .permissions import IsAdminAuthenticated, IsAuthenticated, IsProjectAuthor, IsIssueContributor
@@ -37,7 +39,8 @@ class ProjectViewSet(ProjectAuthorPermissionMixin, viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
-        return Project.objects.filter(author=self.request.user)
+        user = self.request.user
+        return Project.objects.filter(Q(author=user) | Q(contributors__user=user))
 
     def perform_create(self, serializer):
         project = serializer.save(author=self.request.user)
@@ -54,7 +57,8 @@ class IssueViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
     serializer_class = IssueSerializer
 
     def get_queryset(self):
-        return Issue.objects.filter(author=self.request.user)
+        user = self.request.user
+        return Issue.objects.filter(Q(author=user) | Q(other_contributors=user))
 
 
 class CommentViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
@@ -62,4 +66,5 @@ class CommentViewSet(IssueContributorPermissionMixin, viewsets.ModelViewSet):
     lookup_field = 'id'
 
     def get_queryset(self):
-        return Comment.objects.filter(author=self.request.user)
+        user = self.request.user
+        return Comment.objects.filter(Q(author=user) | Q(issue__other_contributors=user) | Q(issue__author=user))
