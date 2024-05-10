@@ -26,11 +26,8 @@ class IsIssueContributor(BasePermission):
     def has_permission(self, request, view):
         issue_id = view.kwargs.get('pk')
         if issue_id:
-            # Utilisation de get_object_or_404 pour gérer proprement les cas où l'issue n'existe pas
             issue = get_object_or_404(Issue, pk=issue_id)
-            # Vérifier si l'utilisateur est l'auteur
             is_author = request.user == issue.author
-            # Vérifier si l'utilisateur est dans la liste des other_contributors
             is_other_contributor = request.user in issue.other_contributors.all()
             return is_author or is_other_contributor
         return False
